@@ -46,14 +46,22 @@ def init_pinn_params(cfg: Config, seed: int | None = None):
 
     nn_params = init_nn_params(cfg, key=nn_key)
 
-    eps = 1e-12  
+    eps = 1e-12
 
-    log_alpha = jnp.log(jnp.array(cfg.alpha) + eps)
-    log_k = jnp.log(jnp.array(cfg.k) + eps)
-    log_h = jnp.log(jnp.array(cfg.h) + eps)
+    scalar_keys = jax.random.split(scalars_key, 4)
+
+    log_alpha0 = jnp.log(jnp.array(cfg.alpha) + eps)
+    log_k0 = jnp.log(jnp.array(cfg.k) + eps)
+    log_h0 = jnp.log(jnp.array(cfg.h) + eps)
 
     power0 = getattr(cfg, "power", 1.0)
-    log_power = jnp.log(jnp.array(power0) + eps)
+    log_power0 = jnp.log(jnp.array(power0) + eps)
+
+    sigma = 1e-2
+    log_alpha = log_alpha0 + sigma * jax.random.normal(scalar_keys[0], (1,))
+    log_k = log_k0 + sigma * jax.random.normal(scalar_keys[1], (1,))
+    log_h = log_h0 + sigma * jax.random.normal(scalar_keys[2], (1,))
+    log_power = log_power0 + sigma * jax.random.normal(scalar_keys[3], (1,))
 
     pinn_params = {
         "nn": nn_params,

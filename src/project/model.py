@@ -44,8 +44,24 @@ def init_pinn_params(cfg: Config, seed: int | None = None):
     # Oppgave 5.1: Start
     #######################################################################
 
-    # Placeholder initialization — replace this with your implementation
-    pinn_params = {}
+    nn_params = init_nn_params(cfg, key=nn_key)
+
+    eps = 1e-12  
+
+    log_alpha = jnp.log(jnp.array(cfg.alpha) + eps)
+    log_k = jnp.log(jnp.array(cfg.k) + eps)
+    log_h = jnp.log(jnp.array(cfg.h) + eps)
+
+    power0 = getattr(cfg, "power", 1.0)
+    log_power = jnp.log(jnp.array(power0) + eps)
+
+    pinn_params = {
+        "nn": nn_params,
+        "log_alpha": log_alpha,
+        "log_power": log_power,
+        "log_k": log_k,
+        "log_h": log_h,
+    }
 
     #######################################################################
     # Oppgave 5.1: Slutt

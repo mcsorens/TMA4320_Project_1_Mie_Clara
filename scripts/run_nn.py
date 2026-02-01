@@ -43,6 +43,7 @@ def main():
     )
     create_animation(
         x, y, t, T_nn, title="NN", save_path="output/nn/nn_animation.gif"
+    )
 
 
     #######################################################################

@@ -46,6 +46,19 @@ def main():
     )
 
 
+    plt.figure()
+    for key in ["total", "data", "ic"]:
+        plt.plot(np.asarray(losses[key]), label=key)
+    plt.yscale("log")
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig("output/nn/nn_losses.png")
+    plt.close()
+
+
+
     #######################################################################
     # Oppgave 4.4: Slutt
     #######################################################################
